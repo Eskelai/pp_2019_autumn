@@ -5,5 +5,7 @@
 #include <mpi.h>
 #include <vector>
 
+std::vector<int> getMatrixCicle(int rows, int columns);
+std::vector<int> getMatrixRandom(int rows, int columns);
 
 #endif  // MODULES_TASK_1_TONKOV_V_MIN_MATRIX_MIN_MATRIX_H_
