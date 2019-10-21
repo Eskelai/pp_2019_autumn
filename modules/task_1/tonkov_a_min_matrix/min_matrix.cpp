@@ -27,3 +27,43 @@ std::vector<int> getMatrixRandom(int rows, int columns) {
 	}
 	return matrix;
 }
+
+int getMinMatrix(const std::vector<int> matrix, int rows, int colums) {
+	int size, rank;
+	int result = 0;
+	int min;
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+	int sizem = rows * colums;
+	const int count = sizem / size; // Подсчитываем процессы
+	const int rest = sizem % size; //	Учитываем остатки
+
+	if (sizem < size) {
+		if (rank == 0) {
+			result = *std::min_element(matrix.begin(), matrix.end()); // Работаем с остатками
+			return result;
+		}
+		else {
+			return result;
+		}
+	}
+
+	std::vector<int> buffer(count);
+
+	if (rank == 0) {
+		for (int proc = 1; proc < size; proc++) {
+			MPI_Send(&matrix[0] + proc * count + rest, count, MPI_INT, proc, 0, MPI_COMM_WORLD); // Отправляем по процам
+		}
+		std::vector<int> temp_matrix = std::vector<int>(matrix.begin(), matrix.begin() + count + rest);
+		min = *std::min_element(temp_matrix.begin(), temp_matrix.end());
+	}
+	else {
+		MPI_Status Status;
+		MPI_Recv(&buffer[0], count, MPI_INT, 0, 0, MPI_COMM_WORLD, &Status);
+		min = *std::min_element(buffer.begin(), buffer.end());
+	}
+
+	MPI_Reduce(&min, &result, 1, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
+	return result;
+}
