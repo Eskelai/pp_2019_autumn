@@ -52,8 +52,8 @@ int getMinMatrix(const std::vector<int> matrix, int rows, int colums) {
 	std::vector<int> buffer(count);
 
 	if (rank == 0) {
-		for (int proc = 1; proc < size; proc++) {
-			MPI_Send(&matrix[0] + proc * count + rest, count, MPI_INT, proc, 0, MPI_COMM_WORLD); // Отправляем по процам
+		for (int process = 1; process < size; process++) {
+			MPI_Send(&matrix[0] + (process * count) + rest, count, MPI_INT, process, 0, MPI_COMM_WORLD); // Отправляем по процам
 		}
 		std::vector<int> temp_matrix = std::vector<int>(matrix.begin(), matrix.begin() + count + rest);
 		min = *std::min_element(temp_matrix.begin(), temp_matrix.end());

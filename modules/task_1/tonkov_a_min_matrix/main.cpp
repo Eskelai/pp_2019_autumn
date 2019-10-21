@@ -5,6 +5,23 @@
 #include <vector>
 #include "./min_matrix.h"
 
+TEST(Matrix_Min_MPI, Test_With_Given_Matrix) {
+	int rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	const int rows = 2;
+	const int columns = 2;
+	std::vector<int> matrix(rows * columns);
+	matrix[0] = 6;
+	matrix[1] = 2;
+	matrix[2] = 8;
+	matrix[3] = 3;
+
+	int min = getMinMatrix(matrix, rows, columns);
+	if (rank == 0) {
+		ASSERT_EQ(2, min);
+	}
+}
+
 TEST(Matrix_Min_MPI, Test_Min_Rnd_Matrix) {
 	int rank;
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -39,6 +56,18 @@ TEST(Matrix_Min_MPI, Test_With_Cicle_Matrix) {
 	int min_matrix = getMinMatrix(matrix, rows, columns);
 	if (rank == 0) {
 		ASSERT_EQ(0, min_matrix);
+	}
+}
+
+TEST(Matrix_Min_MPI, Test_With_Zero_Size_Matrix) {
+	int rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	std::vector<int> matrix;
+	const int rows = 10;
+	const int columns = 0;
+
+	if (rank == 0) {
+		ASSERT_ANY_THROW(getMatrixRandom(rows, columns));
 	}
 }
 

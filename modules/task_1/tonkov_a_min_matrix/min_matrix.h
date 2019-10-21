@@ -7,6 +7,6 @@
 
 std::vector<int> getMatrixCicle(int rows, int columns);
 std::vector<int> getMatrixRandom(int rows, int columns);
-int getMinMatrix(const std::vector<int> matrix, int rows, int cols);
+int getMinMatrix(const std::vector<int> matrix, int rows, int columns);
 
 #endif  // MODULES_TASK_1_TONKOV_A_MIN_MATRIX_MIN_MATRIX_H_
