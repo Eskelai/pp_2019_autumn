@@ -28,7 +28,7 @@ std::vector<int> getMatrixRandom(int rows, int columns) {
    }
    return matrix;
 }
-   
+
 int getMinMatrix(const std::vector<int> matrix, int rows, int colums) {
    int size, rank;
    int result = 0;
