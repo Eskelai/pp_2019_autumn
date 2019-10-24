@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <algorithm>
 #include <vector>
-#include "./min_matrix.h"
+#include "../../../modules/task_1/tonkov_a_min_matrix/min_matrix.h"
 
 TEST(Matrix_Min_MPI, Test_With_Given_Matrix) {
     int rank;
