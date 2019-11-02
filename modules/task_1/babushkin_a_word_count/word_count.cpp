@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "../../../modules/task_1/min_matrix.h"
+#include "../../../modules/task_1/babushkin_a_word_count/word_count.h"
 
 int wordCountParallel(const std::string ref) {
     //-------------------------------------------------- Initialization
