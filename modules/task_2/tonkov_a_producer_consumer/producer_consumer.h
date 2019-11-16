@@ -4,6 +4,8 @@
 
 #include <mpi.h>
 
-int getMinMatrix(const std::vector<int> matrix, int rows, int columns);
+int* generateNumbers(int size);
+void rootsFromNumbers(int* numbers, double* roots, int size);
+void produceConsume(int* numbers, double* roots, int size);
 
 #endif  // MODULES_TASK_2_TONKOV_A_PRODUCER_CONSUMER_H_
