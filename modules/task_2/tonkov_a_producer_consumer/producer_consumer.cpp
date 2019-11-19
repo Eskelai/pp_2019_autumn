@@ -44,7 +44,7 @@ void produceConsume(int* numbers, double* roots, int MAX_NUMBERS) {
             }
 
             // printf("[RANK:0] Sending %i to RANK: %i, from index %i.\n", numbers[nextnum - 1], status.MPI_SOURCE,
-                                                                        nextnum);
+            //                                                            nextnum);
             MPI_Send(&(numbers[nextnum - 1]), 1, MPI_INT, status.MPI_SOURCE,
                 nextnum, MPI_COMM_WORLD);  // Sends nextnum as a tag (MPI_TAG = Number of job)
         }
