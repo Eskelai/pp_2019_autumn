@@ -51,7 +51,7 @@ void produceConsume(int* numbers, double* roots, int MAX_NUMBERS) {
 
         // Send termination signal to each rank when they submit their last job
         int num_terminated = 0;
-        for (int num_terminated = 0; num_terminated < size - 1; num_terminated++) {
+        for (num_terminated = 0; num_terminated < size - 1; num_terminated++) {
             // Wait for a worker to become available
             MPI_Status status;
             double root = 0;
