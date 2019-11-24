@@ -91,6 +91,11 @@ TEST(Producer_Consumer_MPI, test_main_func_false) {
     }
 }
 
+TEST(Producer_Consumer_MPI, temp_test) {
+	bool flag = true;
+	EXPECT_TRUE(flag);
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
