@@ -22,7 +22,7 @@ void rootsFromNumbers(int* numbers, double* roots, int size) {
 
 void produceConsume(int* numbers, double* results, int MAX_NUMBERS) {
     int rank, size;
-	int number_amount = MAX_NUMBERS;
+    int number_amount = MAX_NUMBERS;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
@@ -77,7 +77,7 @@ void produceConsume(int* numbers, double* results, int MAX_NUMBERS) {
             if (status.MPI_TAG == 0) {
                 terminated = true;
             } else {
-				result = sqrt(num);
+                result = sqrt(num);
                 MPI_Send(&result, 1, MPI_DOUBLE, 0, status.MPI_TAG, MPI_COMM_WORLD);
             }
         } while (!terminated);
