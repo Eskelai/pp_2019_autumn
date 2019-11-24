@@ -29,7 +29,7 @@ void produceConsume(int* numbers, double* results, int MAX_NUMBERS) {
     // Check if there's only on processor
     if (rank == 0 && size < 1) {
         rootsFromNumbers(numbers, results, MAX_NUMBERS);
-		return;
+        return;
     }
 
     if (rank == 0 && size >= 2) {  // Producer
