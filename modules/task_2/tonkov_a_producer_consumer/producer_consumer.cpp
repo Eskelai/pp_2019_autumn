@@ -26,9 +26,14 @@ void produceConsume(int* numbers, double* results, int MAX_NUMBERS) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    // Check if there's only on processor
+    if (rank == 0 && size < 1) {
+        rootsFromNumbers(numbers, results, MAX_NUMBERS);
+		return;
+    }
 
-    if (rank == 0) {  // Producer
-        // printf("[RANK:0] Sending %i numbers in total.\n", number_amount);
+    if (rank == 0 && size >= 2) {  // Producer
+        // printf("[RANK:0] Sending %i numbers to %i ranks.\n", number_amount, size);
 
         for (int nextnum = 1 ; nextnum <= number_amount; ++nextnum) {
             // Wait for a worker to become available
@@ -63,7 +68,7 @@ void produceConsume(int* numbers, double* results, int MAX_NUMBERS) {
             MPI_Send(&num_terminated, 1, MPI_INT, status.MPI_SOURCE,
                 0, MPI_COMM_WORLD);
         }
-    } else {  // Consumer
+    } else if (rank > 0) {  // Consumer
      // Announce myself to producer
         double result = 0;
         MPI_Send(&result, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
