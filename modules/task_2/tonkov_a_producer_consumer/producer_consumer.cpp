@@ -20,27 +20,31 @@ void rootsFromNumbers(int* numbers, double* roots, int size) {
     }
 }
 
-void produceConsume(int* numbers, double* roots, int MAX_NUMBERS) {
+void produceConsume(int* numbers, double* results, int MAX_NUMBERS) {
     int rank, size;
+    int number_amount = MAX_NUMBERS;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    int number_amount;
+    // Check if there's only on processor
+    if (rank == 0 && size < 1) {
+        rootsFromNumbers(numbers, results, MAX_NUMBERS);
+		return;
+    }
 
-    if (rank == 0) {  // Producer
-        number_amount = MAX_NUMBERS;
-        // printf("[RANK:0] Sending %i numbers in total.\n", number_amount);
+    if (rank == 0 && size >= 2) {  // Producer
+        // printf("[RANK:0] Sending %i numbers to %i ranks.\n", number_amount, size);
 
         for (int nextnum = 1 ; nextnum <= number_amount; ++nextnum) {
             // Wait for a worker to become available
             MPI_Status status;
-            double root = 0;  // Temp result answer
-            MPI_Recv(&root, 1, MPI_DOUBLE, MPI_ANY_SOURCE,
+            double result = 0;  // Temp result answer
+            MPI_Recv(&result, 1, MPI_DOUBLE, MPI_ANY_SOURCE,
                 MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
             // If a root was computed
             if (status.MPI_TAG > 0) {
-                roots[status.MPI_TAG - 1] = root;
+                results[status.MPI_TAG - 1] = result;
             }
 
             MPI_Send(&(numbers[nextnum - 1]), 1, MPI_INT, status.MPI_SOURCE,
@@ -52,22 +56,22 @@ void produceConsume(int* numbers, double* roots, int MAX_NUMBERS) {
         for (num_terminated = 0; num_terminated < size - 1; num_terminated++) {
             // Wait for a worker to become available
             MPI_Status status;
-            double root = 0;
-            MPI_Recv(&root, 1, MPI_DOUBLE, MPI_ANY_SOURCE,
+            double result = 0;
+            MPI_Recv(&result, 1, MPI_DOUBLE, MPI_ANY_SOURCE,
                 MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
             // If a root was computed
             if (status.MPI_TAG > 0) {
-                roots[status.MPI_TAG - 1] = root;
+                results[status.MPI_TAG - 1] = result;
             }
             // Send termination signal (tag = 0)
             MPI_Send(&num_terminated, 1, MPI_INT, status.MPI_SOURCE,
                 0, MPI_COMM_WORLD);
         }
-    } else {  // Consumer
+    } else if (rank > 0) {  // Consumer
      // Announce myself to producer
-        double root = 0;
-        MPI_Send(&root, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+        double result = 0;
+        MPI_Send(&result, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
         bool terminated = false;
 
         do {
@@ -78,8 +82,8 @@ void produceConsume(int* numbers, double* roots, int MAX_NUMBERS) {
             if (status.MPI_TAG == 0) {
                 terminated = true;
             } else {
-                root = sqrt(num);
-                MPI_Send(&root, 1, MPI_DOUBLE, 0, status.MPI_TAG, MPI_COMM_WORLD);
+                result = sqrt(num);
+                MPI_Send(&result, 1, MPI_DOUBLE, 0, status.MPI_TAG, MPI_COMM_WORLD);
             }
         } while (!terminated);
     }

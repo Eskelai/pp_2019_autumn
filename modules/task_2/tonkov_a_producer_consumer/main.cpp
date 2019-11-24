@@ -50,7 +50,8 @@ TEST(Producer_Consumer_MPI, test_main_func_true) {
 
     int numbers[4] = { 4, 16, 9, 36 };
     double roots[4];
-    double real_roots[4] = { 2, 4, 3, 6 };
+	double real_roots[4];
+	rootsFromNumbers(numbers, roots, 4);
 
     produceConsume(numbers, roots, 4);
 
