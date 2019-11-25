@@ -55,7 +55,6 @@ TEST(Producer_Consumer_MPI, test_main_func_true) {
     rootsFromNumbers(numbers, real_roots, 4);
 
     produceConsume(numbers, roots, 4);
-    
     bool flag = true;
 
     for (int i = 0; i < 4; i++) {
