@@ -48,7 +48,7 @@ TEST(Producer_Consumer_MPI, test_main_func_true) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int numbers[4] = { 4, 16, 9, 36 };
+    int numbers[4] = { 4, 9, 16, 36 };
     double roots[4];
 
     double real_roots[4];
@@ -90,11 +90,6 @@ TEST(Producer_Consumer_MPI, test_main_func_false) {
     if (rank == 0) {
         EXPECT_FALSE(flag);
     }
-}
-
-TEST(Producer_Consumer_MPI, temp_test) {
-    bool flag = true;
-    EXPECT_TRUE(flag);
 }
 
 int main(int argc, char** argv) {

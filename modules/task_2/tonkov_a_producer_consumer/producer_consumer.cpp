@@ -27,7 +27,7 @@ void produceConsume(int* numbers, double* results, int MAX_NUMBERS) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     // Check if there's only on processor
-    if (rank == 0 && size < 1) {
+    if (rank == 0 && size <= 1) {
         rootsFromNumbers(numbers, results, MAX_NUMBERS);
         return;
     }
@@ -68,7 +68,7 @@ void produceConsume(int* numbers, double* results, int MAX_NUMBERS) {
             MPI_Send(&num_terminated, 1, MPI_INT, status.MPI_SOURCE,
                 0, MPI_COMM_WORLD);
         }
-    } else if (rank > 0) {  // Consumer
+    } else if (rank > 0 && size >= 2) {  // Consumer
      // Announce myself to producer
         double result = 0;
         MPI_Send(&result, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
